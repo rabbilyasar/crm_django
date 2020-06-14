@@ -16,6 +16,14 @@
                     <th>Customer</th>
                     <th>Orders</th>
                 </tr>
+
+                {% for customer in customers %}
+                <tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.id %}">view</a></td>
+                    <td>{{ customer.name }}</td>
+                </tr>
+                {% endfor %}
+
             </table>
         </div>
     </div>
@@ -33,10 +41,21 @@
                     <th>Update</th>
                     <th>Remove</th>
                 </tr>
+                {% comment %} {{ orders.order_by('-id')[:5] }} {% endcomment %}
+                {% for order in last_5_orders %}
+                <tr>
+                    <td>{{ order.product }}</td>
+                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.status }}</td>
+                    <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+                </tr>
+                {% endfor %}
+
             </table>
         </div>
     </div>
 </div>
-    <hr>
+<hr>
 
 {% endblock content %}

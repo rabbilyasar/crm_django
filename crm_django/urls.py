@@ -10,5 +10,5 @@ urlpatterns = [
     # path('accounts', include('accounts.urls')),
     path('', home, name='home'),
     path('products', products, name='products'),
-    path('customers', customers, name='customers')
+    path('customers/<str:pk>', customers, name='customer')
 ]
