@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 
 from accounts.models import *
+from accounts.forms import *
 
 
 def home(request):
@@ -34,3 +35,42 @@ def customers(request, pk):
     context = {'customer': customer,
                'orders': orders, 'order_count': order_count}
     return render(request, 'accounts/customers.html', context)
+
+
+def createOrder(request):
+
+    form = OrderForm()
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'accounts/order_form.html', context)
+
+
+def updateOrder(request, pk):
+    order = Order.objects.get(id=pk)
+    form = OrderForm(instance=order)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'accounts/order_form.html', context)
+
+
+def deleteOrder(request, pk):
+    order = Order.objects.get(id=pk)
+    
+    if request.method == "POST":
+        order.delete()
+        return redirect ('home')
+    
+    context = {'item': order}
+    return render(request, 'accounts/delete.html', context)
