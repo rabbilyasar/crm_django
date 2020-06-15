@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.forms import inlineformset_factory
 
 from accounts.models import *
 from accounts.forms import *
+from accounts.filters import *
 
 
 def home(request):
@@ -32,13 +34,17 @@ def customers(request, pk):
     orders = customer.order_set.all()
     order_count = orders.count()
 
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
+
     context = {'customer': customer,
-               'orders': orders, 'order_count': order_count}
+               'orders': orders, 'order_count': order_count, 'myFilter': myFilter}
     return render(request, 'accounts/customers.html', context)
 
 
-def createOrder(request):
+def createOrder(request, pk):
 
+    customer = Customer.objects.get(id=pk)
     form = OrderForm()
 
     if request.method == 'POST':
@@ -48,6 +54,22 @@ def createOrder(request):
             return redirect('home')
 
     context = {'form': form}
+    return render(request, 'accounts/order_form.html', context)
+
+
+def createCustomerOrder(request, pk):
+    OrderFormSet = inlineformset_factory(
+        Customer, Order, fields=('product', 'status'), extra=10)
+    customer = Customer.objects.get(id=pk)
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
+
+    if request.method == 'POST':
+        formset = OrderFormSet(request.POST, instance=customer)
+        if formset.is_valid():
+            formset.save()
+            return redirect('home')
+
+    context = {'formset': formset}
     return render(request, 'accounts/order_form.html', context)
 
 
@@ -67,10 +89,10 @@ def updateOrder(request, pk):
 
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
-    
+
     if request.method == "POST":
         order.delete()
-        return redirect ('home')
-    
+        return redirect('home')
+
     context = {'item': order}
     return render(request, 'accounts/delete.html', context)

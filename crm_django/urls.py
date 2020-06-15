@@ -12,7 +12,9 @@ urlpatterns = [
     path('products', products, name='products'),
     path('customers/<str:pk>', customers, name='customer'),
 
-    path('create_order/', createOrder, name="create_order"),
+    # path('create_order/', createOrder, name="create_order"),
+    path('create_order/<str:pk>', createCustomerOrder,
+         name="customer_create_order"),
     path('update_order/<str:pk>', updateOrder, name="update_order"),
     path('delete_order/<str:pk>', deleteOrder, name="delete_order")
 ]

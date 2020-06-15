@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    
+    'django_filters'
 ]
 
 MIDDLEWARE = [
