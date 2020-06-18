@@ -1,10 +1,28 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
 
 from accounts.models import *
 from accounts.forms import *
 from accounts.filters import *
+
+
+def registerPage(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'accounts/register.html', context)
+
+
+def loginPage(request):
+    context = {}
+    return render(request, 'accounts/login.html', context)
 
 
 def home(request):
@@ -42,9 +60,9 @@ def customers(request, pk):
     return render(request, 'accounts/customers.html', context)
 
 
-def createOrder(request, pk):
+def createOrder(request):
 
-    customer = Customer.objects.get(id=pk)
+    # customer = Customer.objects.get(id=pk)
     form = OrderForm()
 
     if request.method == 'POST':
