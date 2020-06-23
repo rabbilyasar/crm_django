@@ -1,23 +1,39 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from accounts.views import *
+from django.conf.urls.static import static
+from django.conf import settings
 
-# from accounts.urls import
+from accounts.views import registerPage, loginPage, logoutUser, home, userPage, products, customers, createCustomerOrder, updateOrder, deleteOrder, accountSettings
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
 
-    path('register/', registerPage, name='register_page'),
-    path('login/', loginPage, name='register_page'),
+    path('register/', registerPage, name='register'),
+    path('login/', loginPage, name='login'),
+    path('logout/', logoutUser, name='logout'),
 
     path('', home, name='home'),
-    path('products', products, name='products'),
-    path('customers/<str:pk>', customers, name='customer'),
+    path('user/', userPage, name='user_page'),
 
-    # path('create_order/', createOrder, name="create_order"),
+    path('account/', accountSettings, name="account"),
+
+    path('products/', products, name='products'),
+    path('customer/<str:pk>', customers, name='customer'),
+
+
     path('create_order/<str:pk>', createCustomerOrder,
          name="customer_create_order"),
     path('update_order/<str:pk>', updateOrder, name="update_order"),
     path('delete_order/<str:pk>', deleteOrder, name="delete_order")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+print(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

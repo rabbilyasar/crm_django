@@ -21,6 +21,7 @@
                 <tr>
                     <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.id %}">view</a></td>
                     <td>{{ customer.name }}</td>
+                    <td>{{ customer.order_set.count }}</td>
                 </tr>
                 {% endfor %}
 
@@ -32,7 +33,8 @@
         <h5>LAST 5 Orders</h5>
         <hr>
         <div class="card card-body">
-            {% comment %} <a href="{% url 'create_order' %}" class="btn btn-primary btn-sm btn-block">Create Order</a> {% endcomment %}
+            {% comment %} <a href="{% url 'create_order' %}" class="btn btn-primary btn-sm btn-block">Create Order</a>
+            {% endcomment %}
             <table class="table table-sm">
                 <tr>
                     <th>Product</th>
