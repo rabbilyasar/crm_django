@@ -1,4 +1,5 @@
 import os
+import django-heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,7 +42,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    
+
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -122,7 +123,7 @@ DEBUG_TOOLBAR_CONFIG = {
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'os.path.join(BASE_DIR, 'staticfiles')'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static')
@@ -168,3 +169,5 @@ EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '2ece01e5baaa85'
 EMAIL_HOST_PASSWORD = 'bdb2abf987a80e'
+
+django_heroku.settings(locals())
